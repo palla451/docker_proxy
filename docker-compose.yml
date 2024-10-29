@@ -7,10 +7,10 @@ services:
       dockerfile: Dockerfile
     container_name: app
     volumes:
-      - ./www:/var/www
+      - ./www/backend:/var/www/backend  # Monta il backend
+      - frontend-dist:/var/www/frontend/dist  # Volume dedicato per la cartella dist del frontend
     networks:
       - app_network
-
 
   nginx:
     image: nginx:latest
@@ -20,7 +20,8 @@ services:
       - '8090:8080'
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./www:/var/www
+      - ./www/backend:/var/www/backend  # Monta il backend
+      - frontend-dist:/var/www/frontend/dist  # Volume dedicato per la cartella dist del frontend
     depends_on:
       - app
     networks:
@@ -45,7 +46,9 @@ networks:
   app_network:
     driver: bridge
 
-#Volumes
+# Volumes
 volumes:
   database:
+    driver: local
+  frontend-dist:
     driver: local
