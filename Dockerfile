@@ -50,11 +50,20 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN groupadd -g 1000 www && \
     useradd -u 1000 -ms /bin/bash -g www www
 
+COPY entrypoint.sh /var/www/entrypoint.sh
+RUN chmod +x /var/www/entrypoint.sh
+
 # Copia i file del backend nella nuova directory di lavoro
 COPY --chown=www:www ./www /var/www
 
 # Copia i file del frontend generati nel primo stage
 COPY --from=frontend_build /var/www/frontend/dist /var/www/frontend/dist
+
+# Aggiungi l’entrypoint
+
+
+ENTRYPOINT ["/var/www/entrypoint.sh"]
+
 
 # Imposta l'utente per eseguire i comandi successivi
 USER www

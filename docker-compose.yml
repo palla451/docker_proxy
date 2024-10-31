@@ -6,6 +6,10 @@ services:
       context: ./
       dockerfile: Dockerfile
     container_name: app
+    environment:
+      DB_DATABASE: laravel
+      DB_USERNAME: root
+      DB_PASSWORD: password
     volumes:
       - ./www/backend:/var/www/backend  # Monta il backend
       - frontend-dist:/var/www/frontend/dist  # Volume dedicato per la cartella dist del frontend
